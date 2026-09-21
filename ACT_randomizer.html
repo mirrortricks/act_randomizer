@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACT Hexaflex Randomizer</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #f4f4f9;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            color: #333;
+            /* Prevents accidental text highlighting while clicking rapidly */
+            user-select: none; 
+        }
+
+        #process-display {
+            /* 8vmin means 8% of the viewport's smaller dimension. 
+               This keeps it huge but ensures it never overflows the screen. */
+            font-size: 8vmin; 
+            font-weight: bold;
+            text-align: center;
+            padding: 0 5%;
+            margin-bottom: 40px;
+            min-height: 15vh;
+            display: flex;
+            align-items: center;
+        }
+
+        button {
+            padding: 20px 40px;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            background-color: #2c3e50;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        button:hover {
+            background-color: #34495e;
+        }
+
+        button:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .hint {
+            position: absolute;
+            bottom: 20px;
+            font-size: 16px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="process-display">Ready...</div>
+    <button id="shuffle-btn">Pick a Process</button>
+    <div class="hint">Pro tip: You can also just press the Spacebar or click anywhere on the background.</div>
+
+    <script>
+        // The 6 core ACT processes
+        const processes = [
+            "Experiential Acceptance",
+            "Cognitive Defusion",
+            "Present Moment",
+            "Self-as-Context",
+            "Values",
+            "Committed Action"
+        ];
+
+        const display = document.getElementById('process-display');
+        const button = document.getElementById('shuffle-btn');
+
+        function shuffleProcess() {
+            // Pick a random number between 0 and 5
+            const randomIndex = Math.floor(Math.random() * processes.length);
+            display.innerText = processes[randomIndex];
+            
+            // Add a quick visual flash so the audience knows it changed, 
+            // even if it randomly picks the exact same process twice in a row.
+            display.style.opacity = 0;
+            setTimeout(() => {
+                display.style.opacity = 1;
+                display.style.transition = "opacity 0.2s ease-in";
+            }, 50);
+        }
+
+        // Trigger on button click
+        button.addEventListener('click', shuffleProcess);
+
+        // Trigger on clicking anywhere on the background (great for when you are presenting)
+        document.body.addEventListener('click', function(event) {
+            if (event.target !== button) {
+                shuffleProcess();
+            }
+        });
+
+        // Trigger on pressing the Spacebar (so you don't have to look at the mouse)
+        document.addEventListener('keydown', function(event) {
+            if (event.code === 'Space') {
+                shuffleProcess();
+            }
+        });
+    </script>
+
+</body>
+</html>
